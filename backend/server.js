@@ -11,7 +11,7 @@ const app = require("./app");
 const normalizePort = value => {
     const port = parseInt(value, 10);
 
-    if (isNanN(port)) {
+    if (isNaN(port)) {
         return value;
     }
 
