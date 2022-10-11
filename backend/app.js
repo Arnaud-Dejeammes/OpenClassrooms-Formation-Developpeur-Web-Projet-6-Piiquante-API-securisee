@@ -5,30 +5,55 @@ const express = require("express");
 // Appel de la méthode pour l'application
 const app = express();
 
-// app.use(express.json());
+// Gestion de la requête POST (middleware du framework Express : prend les requêtes avec le Content-Type application/json, et met le body sur l'objet request)
+app.use(express.json());
+
 // app.use(express.urlencoded({ extended: true}));
 
 // Middlewares (fonction dans une application Express avec requête et réponse)
+
+// Middleware généraliste de gestion des origines différentes
 app.use((request, response, next) => {
-    console.log("Test");
+    response.setHeader("Access-Control-Allow-Origin", "*"); // Applicable à toutes les routes
+    response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
+    response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
     next();
 });
 
-app.use((request, response, next) => {
-    response.status(201);
-    next();
-});
-
-app.use((request, response, next) => {
-    response.json({
-        message: "Bip... bip... bip... réponse reçue."
+app.post("", (request, response, next) => {
+    console.log(request.body); // Fonctionne grâce au middleware du framework Express
+    response(201).json({
+        message: "Création de l'objet."
     });
-    next();
-})
-
-app.use((request, response) => {
-    console.log("Réponse envoyée.")
 });
+
+app.get("", (request, response, next) => {
+    // Tableau de données
+    // const nomDeLaConstante = [{}]
+    // response.status(200).json(nomDeLaConstante);
+})
 
 // Exportation de la constante pour une utilisation à partir d'autres fichiers
 module.exports = app;
+
+// Middlewares de test
+// app.use((request, response, next) => {
+//     console.log("Test");
+//     next();
+// });
+
+// app.use((request, response, next) => {
+//     response.status(201);
+//     next();
+// });
+
+// app.use((request, response, next) => {
+//     response.json({
+//         message: "Bip... bip... bip... réponse reçue."
+//     });
+//     next();
+// })
+
+// app.use((request, response) => {
+//     console.log("Réponse envoyée.")
+// });
