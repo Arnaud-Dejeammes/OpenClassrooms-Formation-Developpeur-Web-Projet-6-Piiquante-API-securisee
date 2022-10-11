@@ -11,16 +11,14 @@ const app = express();
 app.use(express.json());
 
 const mongoose = require("mongoose");
-/*
-mongoose.connect("",
-    {   
+
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.nnpm2mg.mongodb.net/?retryWrites=true&w=majority`,
+    {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
     .then(() => console.log("MongoDB on!"))
-    .then(() => console.log("MongoDB failed!"));
-
-*/
+    .catch(() => console.log("MongoDB failed!"));
 
 // app.use(express.urlencoded({ extended: true}));
 
