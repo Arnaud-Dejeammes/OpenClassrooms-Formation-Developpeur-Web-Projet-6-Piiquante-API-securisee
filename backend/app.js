@@ -6,7 +6,19 @@ const express = require("express");
 const app = express();
 
 // Gestion de la requête POST (middleware du framework Express : prend les requêtes avec le Content-Type application/json, et met le body sur l'objet request)
+// Analyse du corps de la requête
+// Remplace body-parser
 app.use(express.json());
+
+const mongoose = require("mongoose");
+
+mongoose.connect("",
+    {   
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .then(() => console.log("MongoDB on!"))
+    .then(() => console.log("MongoDB failed!"));
 
 // app.use(express.urlencoded({ extended: true}));
 
