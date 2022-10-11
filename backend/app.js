@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 
 const mongoose = require("mongoose");
-
+/*
 mongoose.connect("",
     {   
         useNewUrlParser: true,
@@ -19,6 +19,8 @@ mongoose.connect("",
     })
     .then(() => console.log("MongoDB on!"))
     .then(() => console.log("MongoDB failed!"));
+
+*/
 
 // app.use(express.urlencoded({ extended: true}));
 
