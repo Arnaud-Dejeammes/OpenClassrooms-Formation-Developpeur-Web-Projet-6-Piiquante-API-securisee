@@ -1,3 +1,5 @@
+// Supprimer app et tout déplacer vers server.js ?
+
 // Création d'une application Express (importation du module)
 const express = require("express");
 // const cors = require("cors") // Voir si cors est nécessaire pour une API en local
