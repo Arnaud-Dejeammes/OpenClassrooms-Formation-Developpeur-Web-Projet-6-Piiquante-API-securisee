@@ -10,6 +10,9 @@ const app = express();
 // Remplace body-parser
 app.use(express.json());
 
+const sauceRoutes = require("./routes/sauces");
+const userRoutes = require("./routes/users");
+
 const mongoose = require("mongoose");
 
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.nnpm2mg.mongodb.net/?retryWrites=true&w=majority`,
@@ -29,24 +32,14 @@ app.use((request, response, next) => {
     response.setHeader("Access-Control-Allow-Origin", "*"); // Applicable à toutes les routes
     response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
     response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-    next();
+    // next();
 });
 
-app.post("", (request, response, next) => {
-    console.log(request.body); // Fonctionne grâce au middleware du framework Express
-    response(201).json({
-        message: "Création de l'objet."
-    });
-});
-
-app.get("", (request, response, next) => {
-    // Tableau de données
-    // const nomDeLaConstante = [{}]
-    // response.status(200).json(nomDeLaConstante);
-})
+app.use("/api/sauces", sauceRoutes);
+app.use("/api/users", userRoutes);
 
 // Exportation de la constante pour une utilisation à partir d'autres fichiers
-module.exports = app;
+module.exports = app; // Supprimer ? Vérifier si son export est utile à d'autres fichiers.
 
 // Middlewares de test
 // app.use((request, response, next) => {
