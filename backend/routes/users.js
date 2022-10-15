@@ -1,48 +1,22 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 const express = require("express");
+const router = express.Router(); // Enregistrement des routes dans le routeur Express
+// let router = express.Router();
 
-const User = require("../models/user.js")
+const User = require("../models/user.js");
 
-let router = express.Router();
+const userController = require("../controllers/user.js");
 
 // Routage de la ressource User
 // URL + /user (récupération globale)
-router.get("", (request, response) => {
-    User.findAll()
-    .then(users => response.json({data: users}))
-    .catch(error => response.status(500).json({message: "Datatbase Error", error: error}))
-});
-
-router.get("/:id");
-
-router.put("");
-
-router.patch("/:id");
-
-router.delete("/:id");
 
 // Route pour le signup
-// app.post("/api/auth/signup")
+// router.post("/api/auth/signup")
+router.post("/auth/signup", (userController.signUpUser));
 
-app.post("/api/auth/signup", (request, response) => {
-    User.findAll()
-    .then(users => response.json({data: users}))
-    .catch(error => response.status(500).json({message: "Datatbase Error", error: error})) // Ne pas transmettre les erreurs pour la sécurité ?
-});
+// Route pour le login
+// router.post("/api/auth/login")
+router.post("/auth/login", (userController.logInUser));
 
-
-app.post("/api/auth/login")
-
-app.get("/api/sauces")
-
-app.get("/api/sauces/:id")
-
-// Attention au post après get
-app.post("/api/sauces")
-
-app.put("/api/sauces/:id")
-
-app.delete("/api/sauces/:id")
-
-app.post("/api/sauces/:id/like")
+module.exports = router;
