@@ -56,14 +56,7 @@ server.on("listening", () => {
     console.log("Listening on " + bind);
 });
 
-// Routage
-// app.get("/", (request, response) => response.send("En ligne."));
-// app.get("*", (request, response) => response.status(501).send("Route non implémantée"));
 
-// Démarrage du serveur
-// app.listen(3000, () => {
-//     console.log("Serveur en marche sur le port 3000.")
-// });
 
 server.listen(port, () => {
     console.log(`Server running on port ${process.env.PORT}.`)
