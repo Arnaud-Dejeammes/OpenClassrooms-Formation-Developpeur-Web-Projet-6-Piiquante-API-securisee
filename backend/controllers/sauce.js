@@ -2,7 +2,7 @@ const Sauce = require("../models/sauce.js");
 
 // Modification
 // router.put("/:id", (sauceController.modifySauce));
-exports.modifySauce = (request, response, next) => {
+exports.updateSauce = (request, response, next) => {
     Sauce.updateOne(
         {id: request.params.id},
         {...request.body,

@@ -19,7 +19,7 @@ router.get("/:id", (sauceController.getOneSauce));
 router.post("/", (sauceController.addSauce));
 
 // Route pour la modification d'une sauce
-router.put("/:id", (sauceController.modifySauce));
+router.put("/:id", (sauceController.updateSauce));
 
 // Route pour la suppression d'une sauce
 router.delete("/:id", (sauceController.deleteSauce));
