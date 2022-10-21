@@ -4,6 +4,10 @@
 // Création d'une application Express (importation du module)
 const express = require("express");
 const cors = require("cors");
+// require("./jsonwebtoken/check")
+
+// Connexion à la base de données
+let dataBaseConnection = require("./db.config");
 
 // Appel de la méthode pour l'application
 const app = express();
@@ -42,6 +46,8 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONG
     })
     .then(() => console.log("MongoDB on!"))
     .catch(() => console.log("MongoDB failed!"));
+
+// app.listen(process.env.SERVER_PORT, () => {console.table(`Server running on port ${process.env.SERVER_PORT}!`)})
 
 // Exportation de la constante pour une utilisation à partir d'autres fichiers
 module.exports = server; // module.exports = app;
