@@ -1,4 +1,4 @@
-const Sauce = require("../models/sauce.js");
+const Sauce = require("../models/sauce");
 
 // Modification
 // router.put("/:id", (sauceController.modifySauce));

@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router(); // Enregistrement des routes dans le routeur Express
 // let router = express.Router();
 
-const Sauce = require("../models/sauce.js");
+const Sauce = require("../models/sauce");
 
-const sauceController = require("../controllers/sauce.js");
+const sauceController = require("../controllers/sauce");
 
 // Routage de la ressource Sauce
 // /api/sauces

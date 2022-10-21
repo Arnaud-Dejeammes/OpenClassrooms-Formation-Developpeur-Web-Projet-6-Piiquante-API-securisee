@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router(); // Enregistrement des routes dans le routeur Express
 // let router = express.Router();
 
-// const User = require("../models/user.js");
+// const User = require("../models/user");
 
-const userController = require("../controllers/user.js");
+const userController = require("../controllers/user");
 
 // Routage de la ressource User
 // URL + /user (récupération globale)
