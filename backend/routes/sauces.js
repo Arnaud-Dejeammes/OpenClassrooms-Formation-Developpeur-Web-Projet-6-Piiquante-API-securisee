@@ -12,7 +12,7 @@ const sauceController = require("../controllers/sauce");
 // Route pour le tableau des sauces
 router.get("/", (sauceController.getEverySauce));
 
-// Route une sauce spécifique
+// Route pour une sauce spécifique
 router.get("/:id", (sauceController.getOneSauce));
 
 // Route pour l'ajout d'une sauce
