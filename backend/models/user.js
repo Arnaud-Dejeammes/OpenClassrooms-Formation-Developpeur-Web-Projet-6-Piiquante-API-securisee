@@ -2,21 +2,25 @@ const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 const bcrypt = require("bcrypt");
 
+// let/const dataBaseConnexion = require("../db.config")
+
 // Méthode Schema de Mongoose
 const userSchema = mongoose.Schema({
     // _id généré par Mongoose
     email: {
         type: String,
         required: true,
+        // allowNull: false,
         unique: true,
         validate: {
-            isEmail: true
+            isEmail: true // Validation de données : blocage de chaînes ne correspondant pas à un email
         }
     },
     password: {
         type: String(64), // Hachage
         required: true,
-        is: /^[0-9a-z]$/i
+        // allowNull: false,
+        is: /^[0-9a-z]$/i // Contrainte // a-f ?
     }
 }, {paranoid: true}); // Softdelete
 
