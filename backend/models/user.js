@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
+
+// Package utilitaire de validation (gestion d'adresses email uniques dans la base de données)
 const uniqueValidator = require("mongoose-unique-validator");
+
 const bcrypt = require("bcrypt");
 
 // let/const dataBaseConnexion = require("../db.config")
