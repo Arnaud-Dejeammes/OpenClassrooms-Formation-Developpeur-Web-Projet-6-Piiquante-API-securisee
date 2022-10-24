@@ -11,10 +11,10 @@ const userController = require("../controllers/user");
 
 // Route pour le signup
 // router.post("/api/auth/signup")
-router.post("/auth/signup", (userController.signUpUser));
+router.post("/signup", (userController.signup)); // Début de route indiquée dans l'application Express de server
 
 // Route pour le login
 // router.post("/api/auth/login")
-router.post("/auth/login", (userController.logInUser));
+router.post("/login", (userController.login)); // Début de route indiquée dans l'application Express de server
 
 module.exports = router;
