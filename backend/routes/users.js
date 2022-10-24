@@ -1,3 +1,6 @@
+// *********************** //
+// Importation des modules //
+// *********************** //
 const express = require("express");
 const router = express.Router(); // Enregistrement des routes dans le routeur Express
 // let router = express.Router();
@@ -6,15 +9,27 @@ const router = express.Router(); // Enregistrement des routes dans le routeur Ex
 
 const userController = require("../controllers/user");
 
-// Routage de la ressource User
+// **************************** //
+// Routage de la ressource User //
+// **************************** //
+
 // URL + /user (récupération globale)
 
-// Route pour le signup
+// ******************** //
+// Route pour le signup //
+// ******************** //
+
 // router.post("/api/auth/signup")
-router.post("/signup", (userController.signup)); // Début de route indiquée dans l'application Express de server
+router.post("/signup", userController.signup); // Début de route indiquée dans l'application Express de server
 
-// Route pour le login
+// ******************* //
+// Route pour le login //
+// ******************* //
+
 // router.post("/api/auth/login")
-router.post("/login", (userController.login)); // Début de route indiquée dans l'application Express de server
+router.post("/login", userController.login); // Début de route indiquée dans l'application Express de server
 
+// *********** //
+// Exportation //
+// *********** //
 module.exports = router;

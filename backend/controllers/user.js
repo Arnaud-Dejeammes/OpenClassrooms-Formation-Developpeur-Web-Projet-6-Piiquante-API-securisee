@@ -1,10 +1,15 @@
+// *********************** //
+// Importation des modules //
+// *********************** //
 const bcrypt = require("bcrypt")
 
 const User = require("../models/user");
 
-// Création d'un profil utilisateur (email + password)
+// *************************************************** //
+// Création d'un profil utilisateur (email + password) //
+// *************************************************** //
 exports.signup = (request, response, next) => {
-    bcrypt.hash(request.body.password, process.env.BCRYPT_SALT_ROUND) // bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
+    bcrypt.hash(request.body.password, parseInt(process.env.BCRYPT_SALT_ROUND)) // bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
         .then(hash => {
             const user = new User({
                 email: request.body.email,
@@ -17,7 +22,9 @@ exports.signup = (request, response, next) => {
         .catch(error => response.status(500).json({error}));
 };
 
-// Connexion au profil utilisateur
+// ******************************* //
+// Connexion au profil utilisateur //
+// ******************************* //
 exports.login = (request, response, next) => {
     // Vérification de l'existence d'un utilisateur dans la base de données
     User.findOne({
@@ -27,7 +34,8 @@ exports.login = (request, response, next) => {
             // Utilisateur inexistant
             if (!user) {
                 return response.status(401).json({  // Unauthorized
-                    // Sécurité : aucune information ne doit laisser transparaître la présence ou l'absence d'un utilisateur dans la base de données
+                    // Sécurité : aucune information ne doit laisser transparaître
+                    // la présence ou l'absence d'un utilisateur dans la base de données
                     message: "Identifiant ou mot de passe incorrect"                    
                 });
             }
@@ -36,7 +44,8 @@ exports.login = (request, response, next) => {
                 .then(valid => {
                     if (!valid) {
                         return response.status(401).json({ // Unauthorized
-                            // Sécurité : aucune information ne doit laisser transparaître la présence ou l'absence d'un utilisateur dans la base de données
+                            // Sécurité : aucune information ne doit laisser transparaître
+                            // la présence ou l'absence d'un utilisateur dans la base de données
                             message: "Identifiant ou mot de passe incorrect"
                         });
                     }

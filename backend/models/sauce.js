@@ -1,35 +1,33 @@
+// *********************** //
+// Importation des modules //
+// *********************** //
 const mongoose = require("mongoose");
 
-// let/const dataBaseConnexion = require("../db.config")
-
-// Méthode Schema de Mongoose
+// ************************** //
+// Méthode Schema de Mongoose //
+// ************************** //
 const sauceSchema = mongoose.Schema({
     // _id généré par Mongoose, avec value et expectedType
     // String(11) // primarykey: true; autoIncrement: true
     userId: {
         type: String,
         required: true
-        // allowNull: false
     },
     name: {
         type: String,
         required: true
-        // allowNull: false
     },
     manufacturer: {
         type: String,
         required: true
-        // allowNull: false
     },
     description: {
-        type: String, // TEXT
+        type: String, 
         required: true
-        // allowNull: false
     },
     mainPepper: {
         type: String,
         required: true
-        // allowNull: false
     },
     imageURL: {
         type: String,
@@ -48,16 +46,18 @@ const sauceSchema = mongoose.Schema({
         required: true
     },
     usersLiked: {
-        type: String,
+        type: ["String <userId>"],
         required: true
-    }, // ["String <userId>"]
+    },
     userDisliked: {
-        type: String,
+        type: ["String <userId>"],
         required: true
-    } // ["String <userId>"]
+    }  
 });
 
-// Exportation pour Express
+// ************************ //
+// Exportation pour Express //
+// ************************ //
 module.exports = mongoose.model("Sauce", sauceSchema);
 
 // Possibilité d'appeler directement le modèle
@@ -65,8 +65,7 @@ module.exports = mongoose.model("Sauce", sauceSchema);
 //     return Sauce = mongoose.define("Sauce", {
 //         userId: {
 //             type: String,
-//             required: true
-//             // allowNull: false
+//             required: true//             
 //         } // etc.
 //     });
 // };

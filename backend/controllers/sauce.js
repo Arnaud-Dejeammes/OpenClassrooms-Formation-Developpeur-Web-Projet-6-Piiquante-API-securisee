@@ -1,9 +1,14 @@
-// const { findOneAndUpdate } = require("../models/sauce");
+// *********************** //
+// Importation des modules //
+// *********************** //
 const Sauce = require("../models/sauce");
 
-// let/const dataBaseConnexion = require("../db.config");
+// const { findOneAndUpdate } = require("../models/sauce");
 
-// Tableau complet (Array of sauces)
+// ********************************* //
+// Tableau complet (Array of sauces) //
+// ********************************* //
+
 // router.get("/", (sauceController.getEverySauce));
 exports.getEverySauce = (request, response, next) => {
     Sauce.find()
@@ -11,7 +16,10 @@ exports.getEverySauce = (request, response, next) => {
         .catch(error => response.status(500).json({error: error}));
 };
 
-// Element spécifique (Single sauce)
+// ********************************* //
+// Element spécifique (Single sauce) //
+// ********************************* //
+
 // router.get("/:id", (sauceController.getOneSauce));
 exports.getOneSauce = (request, response, next) => {
     Sauce.findOne({
@@ -21,12 +29,16 @@ exports.getOneSauce = (request, response, next) => {
         .catch(error => response.status(500).json({error: error})); // 400
 };
 
-// Ajout (message: String)
-// router.post("/", (sauceController.addSauce));
+// *********************** //
+// Ajout (message: String) //
+// *********************** //
+
 // !!! Avec MongoDB, le nom de la collection prend par défaut le nom du modèle au pluriel (Sauce > Sauces)
 
+// router.post("/", (sauceController.addSauce));
 exports.addSauce = (request, response, next) => {
-    delete request.body._id; // Suppression du _id envoyé par le front-end
+    // delete request.body._id; // Suppression de l'_id envoyé par le front-end
+    // console.log(request.body) La clef _id n'apparaît pas.
     const sauce = new Sauce({...request.body});  // spread : copie des éléments de request.body
     sauce.save()
         .then(() => {
@@ -35,32 +47,21 @@ exports.addSauce = (request, response, next) => {
         .catch(error => response.status(400).json({error: error}));
 };
 
-// exports.addSauce = (request, response, next) => { // async
-//     delete request.body._id; // Suppression du _id envoyé par le front-end
-//     // Sauce.create(request.body)
-//     Sauce.save() // Renvoi d'une promise par la méthode save()
-//     .then(() => {
-//         response.status(201).json({message: "Sauce ajoutée"});
-//     })
-//     .catch(error => response.status(400).json({error: error}));
-// }
-
-// async/await
+// Version async/await pour éviter une succession trop importante de .then()
 // exports.addSauce = async (request, response, next) => {
 //     // delete request.body._id;
-//     let sauce = await Sauce.create(request.body);
-//     return response.status(201).json({data: sauce, message: "Sauce ajoutée"});
-//     // .catch(error => response.status(400).json({error: error}));
+//     try{
+//         let sauce = await Sauce.create(request.body);
+//         return response.status(201).json({data: sauce, message: "Sauce ajoutée"});
+//     }catch(e){
+//         return response.status(500).json({error: e})
+//     }  
 // };
 
-// exports.addSauce = async (request, response, next) => {
-//     // delete request.body._id;    
-//     await Sauce.create()
-//     .then(() => response.status(201).json({data: request.body, message: "Sauce ajoutée"}))
-//     .catch(error => response.status(400).json({error: error}));
-// };
+// ****************************** //
+// Modification (message: String) //
+// ****************************** //
 
-// Modification (message: String)
 // router.put("/:id", (sauceController.updateSauce));
 exports.updateSauce = (request, response, next) => {
     Sauce.updateOne({ // findOneAndUpdate
@@ -70,10 +71,13 @@ exports.updateSauce = (request, response, next) => {
     .then(() => {
         response.status(200).json({message: "Sauce modifiée"}); // 200/204/201: resource object (update)
     })
-    .catch(error => response.status(400).json({error: error})); // .catch((error) => {response.status(400).json({error: error});});
-};
+    .catch(error => response.status(500).json({error: error})); // .catch((error) => {response.status(400).json({error: error});});
+}; // Pour des questions de sécurité, séparer le front du back : se contenter de messages.
 
-// Suppression (message: String)
+// ***************************** //
+// Suppression (message: String) //
+// ***************************** //
+
 // router.delete("/:id", (sauceController.deleteSauce));
 exports.deleteSauce = (request, response, next) => {
     Sauce.deleteOne({
@@ -85,23 +89,13 @@ exports.deleteSauce = (request, response, next) => {
     .catch(error => response.status(400).json({error: error})); // .catch((error) => {response.status(400).json({error: error});});
 };
 
-// Appréciation (message: String)
+// ****************************** //
+// Appréciation (message: String) //
+// ****************************** //
+
 // router.post("/:id/like", (sauceController.rateSauce));
 exports.rateSauce = (request, response, next) => {
     // Sauce.findOne
     // Sauce.updateOne
     // Sauce.updateOne
 };
-
-// app.post("", (request, response, next) => {
-//     console.log(request.body); // Fonctionne grâce au middleware du framework Express
-//     response(201).json({
-//         message: "Création de l'objet."
-//     });
-// });
-
-// app.get("", (request, response, next) => {
-//     // Tableau de données
-//     // const nomDeLaConstante = [{}]
-//     // response.status(200).json(nomDeLaConstante);
-// })
