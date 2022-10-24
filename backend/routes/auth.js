@@ -8,10 +8,10 @@ const authentificationController = require("../controllers/auth");
 
 // Route pour le signup
 // router.post("/api/auth/signup")
-router.post("/auth/signup", (userController.signUpUser));
+router.post("/signup", (userController.signup));
 
 // Route pour le login
 // router.post("/api/auth/login")
-router.post("/auth/login", (userController.logInUser));
+router.post("/login", (userController.login));
 
 module.exports = router;
