@@ -2,6 +2,7 @@
 // Importation des modules //
 // *********************** //
 const bcrypt = require("bcrypt")
+const jsonwebtoken = require("jsonwebtoken");
 
 const User = require("../models/user");
 
@@ -51,7 +52,15 @@ exports.login = (request, response, next) => {
                     }
                     response.status(200).json({
                         userId: user._id,
-                        token: "TOKEN"
+                        token: jsonwebtoken.sign({
+                            userId: user._id,
+                            token: jsonwebtoken.sign(
+                                {userId: user._id},
+                                "process.env.GENERATE_RANDOM_TOKEN", // 
+                                {expiresIn: "12h"}
+                            )
+                        }                            
+                        )
                     });
                 })
                 .catch(error => response.status(500).json({error}));
