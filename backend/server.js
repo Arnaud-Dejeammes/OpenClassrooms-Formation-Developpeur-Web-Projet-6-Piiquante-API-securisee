@@ -13,7 +13,8 @@ const mongoose = require("mongoose");
 // Importation des modules de routage //
 // ********************************** //
 const sauceRoutes = require("./routes/sauces");
-const userRoutes = require("./routes/auth");
+const userRoutes = require("./routes/users");
+const authRoutes = require("./routes/auth")
 
 // Appel de la méthode pour l'application
 const app = express();
@@ -38,14 +39,14 @@ app.use(express.json());
 // Routage //
 // ******* //
 app.use("/sauces", sauceRoutes);
-app.use("/auth", userRoutes); // Token
+app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
 
 // ******************** //
 // Démarrage du serveur //
 // ******************** //
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.nnpm2mg.mongodb.net/?retryWrites=true&w=majority`,
-    {
-        user: true, // useNewUrlParser
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.nnpm2mg.mongodb.net/?retryWrites=true&w=majority`, {
+        useNewUrlParser: true,
         useUnifiedTopology: true
     })
     .then(() => {        

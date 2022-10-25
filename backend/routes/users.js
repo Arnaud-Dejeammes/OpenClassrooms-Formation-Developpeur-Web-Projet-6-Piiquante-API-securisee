@@ -27,7 +27,7 @@ router.post("/signup", userController.signup); // Début de route indiquée dans
 // ******************* //
 
 // router.post("/api/auth/login")
-router.post("/login", userController.login); // Début de route indiquée dans l'application Express de server
+// router.post("/login", userController.login); // Début de route indiquée dans l'application Express de server
 
 // *********** //
 // Exportation //
