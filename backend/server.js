@@ -38,9 +38,9 @@ app.use(express.json());
 // ******* //
 // Routage //
 // ******* //
-app.use("/sauces", sauceRoutes);
-app.use("/users", userRoutes);
-app.use("/auth", authRoutes);
+app.use("/api/sauces", sauceRoutes);
+app.use("/api/auth", userRoutes);
+app.use("/api/auth", authRoutes);
 
 // ******************** //
 // Démarrage du serveur //
