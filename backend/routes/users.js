@@ -21,6 +21,7 @@ const userController = require("../controllers/user");
 
 // router.post("/api/auth/signup")
 router.post("/signup", userController.signup); // Début de route indiquée dans l'application Express de server
+// router.post("/signup", require("../controllers/user").signup);
 
 // ******************* //
 // Route pour le login //
