@@ -3,6 +3,9 @@
 // *********************** //
 const jsonwebtoken = require("jsonwebtoken");
 
+// ************************************** //
+// Jeton d'accès sécurisé (authorisation) //
+// ************************************** //
 module.exports = (request, response, next) => {
     try {
         // Extraction du token à partir du header Authorization de la requête entrante
