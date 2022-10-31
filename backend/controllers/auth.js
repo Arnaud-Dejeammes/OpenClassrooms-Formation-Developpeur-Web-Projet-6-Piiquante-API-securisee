@@ -10,7 +10,7 @@ const User = require("../models/user");
 // Connexion au profil utilisateur //
 // ******************************* //
 exports.login = (request, response, next) => {
-    // Vérification de l'existence d'un utilisateur dans la base de données
+    // Vérification de l'existence d'un utilisateur dans la base de données    
     User.findOne({
         email: request.body.email
     })        
