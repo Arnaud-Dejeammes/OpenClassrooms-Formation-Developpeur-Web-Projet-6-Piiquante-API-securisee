@@ -50,7 +50,7 @@ exports.getOneSauce = (request, response, next) => {
 // delete sauceObject.userId; // Suppression pour le remplacement par le jeton sécurisé
 // console.table(request.body.sauce);  // Possibilité d'interception des informations
 
-exports.addSauce = (request, response, next) => {
+exports.addSauce = (request, response, next) => {    
     // console.log(request.body)
     const sauceObject = express.json(request.body.sauce); // Données de la requête envoyées par le front-end : form-data
     // const sauceObject = JSON.parse(request.body.sauce); // Données de la requête envoyées par le front-end : form-data
@@ -62,10 +62,10 @@ exports.addSauce = (request, response, next) => {
     const sauce = new Sauce({        
         ...sauceObject,
         // userId: request.auth.userId
-        // imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`        
+        // imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
         
     });  
-    console.log(sauce) 
+    // console.log(sauce) 
     // console.log(request.body.sauce) 
     sauce.save()
         .then(() => {
