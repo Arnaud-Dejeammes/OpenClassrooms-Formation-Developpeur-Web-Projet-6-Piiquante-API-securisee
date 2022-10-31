@@ -9,10 +9,17 @@ const mongoose = require("mongoose");
 const sauceSchema = mongoose.Schema({
     // _id généré par Mongoose, avec value et expectedType
     // String(11) // primarykey: true; autoIncrement: true
-    userId: {
-        type: String,
-        required: true
-    },
+    // userId: {
+    //     type: String,
+    //     required: true
+    // },
+    // const newSauce = new Sauce();
+    // newSauce.name = this.sauceForm.get('name')!.value;
+    // newSauce.manufacturer = this.sauceForm.get('manufacturer')!.value;
+    // newSauce.description = this.sauceForm.get('description')!.value;
+    // newSauce.mainPepper = this.sauceForm.get('mainPepper')!.value;
+    // newSauce.heat = this.sauceForm.get('heat')!.value;
+    // newSauce.userId = this.auth.getUserId();
     name: {
         type: String,
         required: true
@@ -22,10 +29,22 @@ const sauceSchema = mongoose.Schema({
         required: true
     },
     description: {
-        type: String, 
+        type: String,
         required: true
     },
     mainPepper: {
+        type: String,
+        required: true
+    },
+    // imageURL: {
+    //     type: String,
+    //     required: true
+    // },
+    heat: {
+        type: Number,
+        // required: true
+    },
+    userId: {
         type: String,
         required: true
     },
@@ -33,25 +52,23 @@ const sauceSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    heat: {
-        type: Number,
-        required: true
-    },
     likes: {
         type: Number,
-        required: true
+        // required: false,
+        default: 0
     },
     dislikes: {
         type: Number,
-        required: true
+        // required: false,
+        default: 0
     },
     usersLiked: {
-        type: ["String <userId>"],
-        required: true
+        type: [String], // ["String <userId>"]
+        // required: false        
     },
-    userDisliked: {
-        type: ["String <userId>"],
-        required: true
+    usersDisliked: {
+        type: [String], // ["String <userId>"]
+        // required: false
     }  
 });
 
