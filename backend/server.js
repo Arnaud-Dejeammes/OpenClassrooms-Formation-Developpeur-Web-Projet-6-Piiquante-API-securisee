@@ -13,7 +13,6 @@ const mongoose = require("mongoose");
 // Importation des modules de routage //
 // ********************************** //
 const sauceRoutes = require("./routes/sauces");
-const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
 
 // Traitement des requêtes vers la route /image avec un dossier images statique
@@ -30,24 +29,25 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
     allowHeaders: "Origin, X-Requested-With, X-Access-Token, Role, Content, Accept, Content-Type, Authorization" // response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");    
 }));
+// app.use(cors())
 
 // Gestion de la requête POST (middleware du framework Express : prend les requêtes avec le Content-Type application/json, et met le body sur l'objet request)
 // Analyse du corps de la requête
 // Remplace body-parser
 app.use(express.json()); // Vérifier l'utilité. Pas le même résultat lors de la requête pour addSauce
 
-// const bodyParser = require("body-parser")
-// app.use(bodyParser.json());
+//const bodyParser = require("body-parser")
+//app.use(bodyParser.json());
 
 
-// app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true}));
 
 // ******* //
 // Routage //
 // ******* //
-app.use("/api/sauces", sauceRoutes);
 app.use("/images", express.static(path.join(__dirname, "images")));
-app.use("/api/auth", userRoutes);
+
+app.use("/api/sauces", sauceRoutes);
 app.use("/api/auth", authRoutes);
 
 // app.use(
