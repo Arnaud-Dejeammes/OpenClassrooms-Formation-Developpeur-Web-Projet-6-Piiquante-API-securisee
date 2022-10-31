@@ -7,13 +7,22 @@ const router = express.Router(); // Enregistrement des routes dans le routeur Ex
 
 // const Sauce = require("../models/sauce");
 
-const check = require("../jsonwebtoken/check")
+// *************************** //
+// Importation des middlewares //
+// *************************** //
+const check = require("../jsonwebtoken/check"); // Déplacer le fichier et supprimer le dossier > "../middlewares/check"
+const multer = require("../middlewares/multer");
 
+// ******************************** //
+// Importation des logiques métiers //
+// ******************************** //
 const sauceController = require("../controllers/sauce");
 
 // ***************************** //
 // Routage de la ressource Sauce //
 // ***************************** //
+// Règle de sécurité :
+// 1. check (autorisation par token) > 2. multer
 
 // /api/sauces
 
@@ -30,12 +39,12 @@ router.get("/:id", (check, sauceController.getOneSauce));
 // ************************************************ //
 // Route pour l'ajout d'une sauce (message: String) //
 // ************************************************ //
-router.post("/", (check, sauceController.addSauce));
+router.post("/", (check, multer, sauceController.addSauce));
 
 // ******************************************************** //
 // Route pour la modification d'une sauce (message: String) //
 // ******************************************************** //
-router.put("/:id", (check, sauceController.updateSauce));
+router.put("/:id", (check, multer, sauceController.updateSauce));
 
 // ******************************************************* //
 // Route pour la suppression d'une sauce (message: String) //
