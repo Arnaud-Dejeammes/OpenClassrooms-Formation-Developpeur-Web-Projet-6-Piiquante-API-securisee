@@ -15,14 +15,15 @@ module.exports = (request, response, next) => {
         const decodeToken = jsonwebtoken.verify(token, process.env.GENERATE_RANDOM_TOKEN);
         // Extraction de l'id utilisateur du token et ajout à l'objet request pour son exploitation par les différentes routes
         const userId = decodeToken.userId;
-        
         request.auth = {
             userId: userId
         };
-        next();
+        if (request.body.userId && request.body.userId !== userId) {
+            throw "Non valide"
+        } else {
+            next();
+        };        
     } catch(error) {
         response.status(401).json({error});
     };
 };
-
-// module.exports = router;
