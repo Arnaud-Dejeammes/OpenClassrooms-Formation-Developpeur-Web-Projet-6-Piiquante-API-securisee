@@ -14,7 +14,10 @@ const mongoose = require("mongoose");
 // ********************************** //
 const sauceRoutes = require("./routes/sauces");
 const userRoutes = require("./routes/users");
-const authRoutes = require("./routes/auth")
+const authRoutes = require("./routes/auth");
+
+// Traitement des requêtes vers la route /image avec un dossier images statique
+const path = require("path");
 
 // Appel de la méthode pour l'application
 const app = express();
@@ -31,7 +34,11 @@ app.use(cors({
 // Gestion de la requête POST (middleware du framework Express : prend les requêtes avec le Content-Type application/json, et met le body sur l'objet request)
 // Analyse du corps de la requête
 // Remplace body-parser
-app.use(express.json());
+app.use(express.json()); // Vérifier l'utilité. Pas le même résultat lors de la requête pour addSauce
+
+// const bodyParser = require("body-parser")
+// app.use(bodyParser.json());
+
 
 // app.use(express.urlencoded({extended: true}));
 
@@ -39,8 +46,16 @@ app.use(express.json());
 // Routage //
 // ******* //
 app.use("/api/sauces", sauceRoutes);
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/auth", userRoutes);
 app.use("/api/auth", authRoutes);
+
+// app.use(
+// 	bodyParser.urlencoded({
+// 		extended: true,
+// 	})
+// );
+// app.use(bodyParser.json());
 
 // ******************** //
 // Démarrage du serveur //
@@ -52,6 +67,6 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONG
     .then(() => {        
         // Démarrage de l'API
         app.listen(process.env.SERVER_PORT, () => {console.table(`Server running on port ${process.env.SERVER_PORT}!`)})
-        console.log("MongoDB on!")
+        console.log("MongoDB on!");
     })
     .catch(() => console.log("MongoDB failed!"));
