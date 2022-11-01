@@ -1,21 +1,20 @@
 // *********************** //
 // Importation des modules //
 // *********************** //
-const express = require("express");
 const fileSystem = require("fs");
 
 const Sauce = require("../models/sauce");
-// const { findOneAndUpdate } = require("../models/sauce");
+
+// Pour des questions de sécurité, séparer le front du back : se contenter de messages.
 
 // ********************************* //
 // Tableau complet (Array of sauces) //
 // ********************************* //
-// router.get("/", (sauceController.getEverySauce));
+// router.get("/", sauceController.getEverySauce);
 exports.getEverySauce = (request, response, next) => {
     Sauce.find()        
-        .then((sauces) => {response.status(200).json(sauces)}) // Code
-        // .then(everySauce => response.json({data: everySauce})) // 200: resource collection (read)
-        .catch(error => response.status(404).json({error: error}));
+        .then((sauces) => {response.status(200).json(sauces)}) // 200: resource collection (read)        
+        .catch(error => response.status(404).json({error: error})); // 404 : not found
 };
 
 // ********************************* //
@@ -27,85 +26,51 @@ exports.getOneSauce = (request, response, next) => {
         _id: request.params.id
     })
         .then(console.log(request.params))
-        .then((oneSauce) => {response.status(200).json(oneSauce)}) // Code
-        // .then(oneSauce => response.json({data: oneSauce})) // 200: resource object (read)
+        .then((oneSauce) => {response.status(200).json(oneSauce)}) // 200: resource object (read)        
         .catch(error => response.status(500).json({error: error})); // 400
 };
 
 // *********************** //
 // Ajout (message: String) //
 // *********************** //
-// router.post("/", (sauceController.addSauce));
+// router.post("/", sauceController.addSauce);
 // !!! Avec MongoDB, le nom de la collection prend par défaut le nom du modèle au pluriel (Sauce > Sauces)
-
-// Front end
-    // const newSauce = new Sauce();
-    // newSauce.name = this.sauceForm.get('name')!.value;
-    // newSauce.manufacturer = this.sauceForm.get('manufacturer')!.value;
-    // newSauce.description = this.sauceForm.get('description')!.value;
-    // newSauce.mainPepper = this.sauceForm.get('mainPepper')!.value;
-    // newSauce.heat = this.sauceForm.get('heat')!.value;
-    // newSauce.userId = this.auth.getUserId();
-
-// delete sauceObject.userId; // Suppression pour le remplacement par le jeton sécurisé
-// console.table(request.body.sauce);  // Possibilité d'interception des informations
-
 exports.addSauce = (request, response, next) => {    
-    // console.log(request.body)
-    const sauceObject = express.json(request.body.sauce); // Données de la requête envoyées par le front-end : form-data
-    // const sauceObject = JSON.parse(request.body.sauce); // Données de la requête envoyées par le front-end : form-data
-    // Unexpected token u in JSON at position 0
-    // delete sauceObject._id;
-    // delete sauceObject.userId;
-    // delete request.body._id; // Suppression de l'_id envoyé par le front-end
-    // console.log(sauceObject);
+    const sauceObject = JSON.parse(request.body.sauce); // Données de la requête envoyées par le front-end : form-data
+    
+    delete sauceObject._id; // Suppression de l'_id envoyé par le front end pour le remplacement par le jeton sécurisé
+    
     const sauce = new Sauce({        
-        ...sauceObject,
-        // userId: request.auth.userId
-        // imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
-        
-    });  
-    // console.log(sauce) 
-    // console.log(request.body.sauce) 
+        ...sauceObject, // spread : copie des éléments de request.body
+        imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
+    });
+    
     sauce.save()
         .then(() => {
             response.status(201).json({message: "Sauce ajoutée"}); // 201: resource object (create)
         })
-        .catch(error => response.status(400).json({error: error}));
+        .catch(error => response.status(400).json({error: error})); // 400: bad request
 };
-
-// Version async/await pour éviter une succession trop importante de .then()
-// exports.addSauce = async (request, response, next) => {
-//     // delete request.body._id;
-//     try{
-//         let sauce = await Sauce.create(request.body);
-//         return response.status(201).json({data: sauce, message: "Sauce ajoutée"});
-//     }catch(e){
-//         return response.status(500).json({error: e})
-//     }  
-// };
 
 // ****************************** //
 // Modification (message: String) //
 // ****************************** //
-
-// router.put("/:id", (sauceController.updateSauce));
+// router.put("/:id", sauceController.updateSauce);
 exports.updateSauce = (request, response, next) => {
     Sauce.updateOne({ // findOneAndUpdate
         _id: request.params.id,
-        ...request.body // spread : copie des éléments de request.body
+        ...request.body
     })
     .then(() => {
-        response.status(200).json({message: "Sauce modifiée"}); // 200/204/201: resource object (update)
+        response.status(200).json({message: "Sauce modifiée"}); // 200/201: resource object (update)
     })
-    .catch(error => response.status(500).json({error: error})); // .catch((error) => {response.status(400).json({error: error});});
-}; // Pour des questions de sécurité, séparer le front du back : se contenter de messages.
+    .catch(error => response.status(500).json({error: error})); // 400
+};
 
 // ***************************** //
 // Suppression (message: String) //
 // ***************************** //
-
-// router.delete("/:id", (sauceController.deleteSauce));
+// router.delete("/:id", sauceController.deleteSauce);
 exports.deleteSauce = (request, response, next) => {
     Sauce.findOne({ // deleteOne
         _id: request.params.id
@@ -135,7 +100,6 @@ exports.deleteSauce = (request, response, next) => {
 // ****************************** //
 // Appréciation (message: String) //
 // ****************************** //
-
 exports.rateSauce = (request, response, next) => {
     
     const idNumber = request.params.id;
