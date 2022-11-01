@@ -76,11 +76,11 @@ exports.deleteSauce = (request, response, next) => {
         _id: request.params.id
     })
     .then((oneSauce) => {
-        if (oneSauce._id != request.auth._id) { // userId
-            response.status(401).json({error: error})
-        } else {
-            const filename = oneSauce.imageUrl.split("/images/")[1];
-            fileSystem.unlink(`images/$(filename)`, () => {
+        // if (oneSauce._id != request.auth._id) { // userId
+        //     response.status(401).json({error: error})
+        // } else {
+        //     const filename = oneSauce.imageUrl.split("/images/")[1];
+        //     fileSystem.unlink(`images/$(filename)`, () => {
                 Sauce.deleteOne({
                     _id: request.params.id
                 })
@@ -88,13 +88,13 @@ exports.deleteSauce = (request, response, next) => {
                     message: "Sauce supprimée"
                 })})
                 .catch(error => response.status(401).json({error: error}));
-            });
-        }
+            // });
+        // }
     })
     // .then(() => {
     //     response.status(200).json({message: "Sauce supprimée"}); // 200/202/204: no response (delete resource)
     // })
-    .catch(error => response.status(5800).json({error: error})); // .catch((error) => {response.status(400).json({error: error});});
+    .catch(error => response.status(500).json({error: error})); // .catch((error) => {response.status(400).json({error: error});});
 };
 
 // ****************************** //
