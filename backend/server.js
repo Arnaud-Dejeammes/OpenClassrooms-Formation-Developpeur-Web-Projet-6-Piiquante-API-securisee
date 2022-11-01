@@ -34,11 +34,11 @@ app.use(cors({
 // Gestion de la requête POST (middleware du framework Express : prend les requêtes avec le Content-Type application/json, et met le body sur l'objet request)
 // Analyse du corps de la requête
 // Remplace body-parser
+// const bodyParser = require("body-parser")
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(express.json()); // Vérifier l'utilité. Pas le même résultat lors de la requête pour addSauce
-
-//const bodyParser = require("body-parser")
-//app.use(bodyParser.json());
-
 
 app.use(express.urlencoded({extended: true}));
 
@@ -49,13 +49,6 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use("/api/sauces", sauceRoutes);
 app.use("/api/auth", authRoutes);
-
-// app.use(
-// 	bodyParser.urlencoded({
-// 		extended: true,
-// 	})
-// );
-// app.use(bodyParser.json());
 
 // ******************** //
 // Démarrage du serveur //
