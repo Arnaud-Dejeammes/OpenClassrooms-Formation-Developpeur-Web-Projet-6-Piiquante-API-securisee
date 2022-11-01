@@ -25,6 +25,12 @@ const storage = multer.diskStorage({
         const name = file.originalname.split(" ").join("_");
         const extension = MIME_TYPES[file.mimetype];
         callback(null, name + Date.now() + "." + extension);
+
+        // if (extension === "gif" || extension === "jpg" || extension === "png" || extension === "webp") {
+        //     callback(null, true);
+        // } else {
+        //     callback("Format d'image non pris en charge", false)
+        // }
     }
 });
 
