@@ -7,7 +7,6 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-// require("./jsonwebtoken/check")
 
 // ********************************** //
 // Importation des modules de routage //
@@ -25,20 +24,14 @@ const app = express();
 // Middleware généraliste pour le partage des ressources entre origines multiples //
 // ****************************************************************************** //
 app.use(cors({
-    origin: "*", // response.setHeader("Access-Control-Allow-Origin", "*"); // Applicable à toutes les routes
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-    allowHeaders: "Origin, X-Requested-With, X-Access-Token, Role, Content, Accept, Content-Type, Authorization" // response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");    
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowHeaders: "Origin, X-Requested-With, X-Access-Token, Role, Content, Accept, Content-Type, Authorization"
 }));
-// app.use(cors())
 
 // Gestion de la requête POST (middleware du framework Express : prend les requêtes avec le Content-Type application/json, et met le body sur l'objet request)
-// Analyse du corps de la requête
-// Remplace body-parser
-// const bodyParser = require("body-parser")
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended: true}));
-
-app.use(express.json()); // Vérifier l'utilité. Pas le même résultat lors de la requête pour addSauce
+// Analyse le corps de la requête et remplace l'ancien module body-parser
+app.use(express.json());
 
 app.use(express.urlencoded({extended: true}));
 
