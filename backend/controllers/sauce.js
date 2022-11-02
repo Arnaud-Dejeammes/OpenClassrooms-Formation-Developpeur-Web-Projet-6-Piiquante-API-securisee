@@ -2,64 +2,58 @@
 // Importation des modules //
 // *********************** //
 const fileSystem = require("fs");
-const { findOneAndDelete } = require("../models/sauce");
 
 const Sauce = require("../models/sauce");
-
-// Pour des questions de sécurité, séparer le front du back : se contenter de messages.
 
 // *************** //
 // Tableau complet //
 // *************** //
-// router.get("/", sauceController.getEverySauce);
 exports.getEverySauce = (request, response, next) => {
     Sauce.find()        
-        .then((sauces) => {response.status(200).json(sauces)}) // 200: resource collection (read)        
-        .catch(error => response.status(404).json({error: error})); // 404 : not found
+        .then((sauces) => {response.status(200).json(sauces)})
+        .catch(error => response.status(500).json({error: error}));
 };
 
 // ****************** //
 // Element spécifique //
 // ****************** //
-// router.get("/:id", (sauceController.getOneSauce));
 exports.getOneSauce = (request, response, next) => {
     Sauce.findOne({
         _id: request.params.id
     })        
-        .then((oneSauce) => {response.status(200).json(oneSauce)}) // 200: resource object (read)        
-        .catch(error => response.status(500).json({error: error})); // 400
+        .then((oneSauce) => {response.status(200).json(oneSauce)})
+        .catch(error => response.status(500).json({error: error}));
 };
 
 // ***** //
 // Ajout //
 // ***** //
-// router.post("/", sauceController.addSauce);
-// !!! Avec MongoDB, le nom de la collection prend par défaut le nom du modèle au pluriel (sauce > sauces)
-exports.addSauce = (request, response, next) => {    
-    const sauceObject = JSON.parse(request.body.sauce); // Données de la requête envoyées par le front-end : form-data
+exports.addSauce = (request, response, next) => {
+     // Interprétation des données de la requête envoyées par le front-end (form-data)
+    const sauceObject = JSON.parse(request.body.sauce);
     
-    delete sauceObject._id; // Suppression de l'_id envoyé par le front end pour le remplacement par le jeton sécurisé
+    // Suppression de l'_id envoyé par le front end pour le remplacement par le jeton sécurisé
+    delete sauceObject._id;
     
     const sauce = new Sauce({        
-        ...sauceObject, // spread : copie des éléments de request.body
+        ...sauceObject,
         imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
     });
     
     sauce.save()
         .then(() => {
-            response.status(201).json({message: "Sauce ajoutée"}); // 201: resource object (create)
+            response.status(201).json({message: "Sauce ajoutée"});
         })
-        .catch(error => response.status(400).json({error: error})); // 400: bad request
+        .catch(error => response.status(500).json({error: error}));
 };
 
 // ************ //
 // Modification //
 // ************ //
-// router.put("/:id", sauceController.updateSauce);
 exports.updateSauce = (request, response, next) => {    
     // Modification avec changement d'image
     if (request.file) {
-        Sauce.findOne( // findOneAndUpdate
+        Sauce.findOne(
             {_id: request.params.id},
         )
         .then(sauce => {
@@ -76,32 +70,30 @@ exports.updateSauce = (request, response, next) => {
                     {...sauceObject}
                 )
                 .then(() => {
-                    response.status(200).json({message: "Sauce modifiée"}); // 200/201: resource object (update)
+                    response.status(200).json({message: "Sauce modifiée"});
                 })
-                .catch(error => response.status(400).json({error: error})); // 500
+                .catch(error => response.status(500).json({error: error}));
             })
         })
-        .catch(error => response.status(500).json({error: error})); // 400
+        .catch(error => response.status(500).json({error: error}));
     } else { // Modification sans changement d'image
-        Sauce.findOneAndUpdate( // updateOne
+        Sauce.findOneAndUpdate(
             {_id: request.params.id},
             {
-                ...request.body,
-                // imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
+                ...request.body                
             })
         .then(() => {
-            response.status(200).json({message: "Sauce modifiée"}); // 200/201: resource object (update)
+            response.status(200).json({message: "Sauce modifiée"});
         })
-        .catch(error => response.status(500).json({error: error})); // 400
+        .catch(error => response.status(500).json({error: error}));
     }
 };
 
 // *********** //
 // Suppression //
 // *********** //
-// router.delete("/:id", sauceController.deleteSauce);
 exports.deleteSauce = (request, response, next) => {
-    Sauce.findOne({ // findOneAndDelete
+    Sauce.findOne({
         _id: request.params.id
     })
         .then((sauce) => {
@@ -111,7 +103,7 @@ exports.deleteSauce = (request, response, next) => {
                 Sauce.deleteOne({
                     _id: request.params.id
                 })
-                .then(() => {response.status(200).json({ // 200/202/204: no response (delete resource)
+                .then(() => {response.status(200).json({
                     message: "Sauce supprimée"
                 })})
                 .catch(error => response.status(401).json({error: error}));
@@ -120,64 +112,74 @@ exports.deleteSauce = (request, response, next) => {
         .catch(error => response.status(500).json({error: error}));
 };
 
-// ****************************** //
-// Appréciation (message: String) //
-// ****************************** //
+// ************ //
+// Appréciation //
+// ************ //
 exports.rateSauce = (request, response, next) => {
-    
-    const idNumber = request.params.id;
-    const userNumber = request.body.userId;
+    const sauceId = request.params.id;
+    const userId = request.body.userId;
     
     const like = request.body.like;
-    // const ??? = Sauce.updateOne()
-
-    console.log(idNumber);
-
-    if (like === 0) {
-
-    };
-
-    if (like === 1) {
-        Sauce.updateOne(
-            {_id: idNumber},
-            {
-                $push: {
-                    usersLiked: userId,
-                },
-                $inc: {
-                    likes: +1
-                }
-            }
-        )        
-        .then(() => response.status(200).json({message: "Aimée"}))
-        .catch(error => response.status(500).json({error: error})); // 400
-    };
-
-    if (like === -1) {
-        Sauce.updateOne(
-            {_id: idNumber},
-            {
-                $push: {
-                    usersDisiked: userId,
-                },
-                $inc: {
-                    dislikes: +1
-                }
-            }
-        )        
-        .then(() => response.status(200).json({message: "Pas aimée"}))
-        .catch(error => response.status(500).json({error: error})); // 400
-    };
-
+    // MongoDB operators
+    // $inc: increments a field by a specified value
+    // $pull: removes from an existing array all instances of a value that match a specified condition
+   
     Sauce.findOne({
-        _id: request.params.id
+        _id : sauceId
     })
-    
-};
+        .then((sauce) => {  
+            // // Ajout d'une appréciation positive (like)
+            if (!sauce.usersLiked.includes(userId) && like === 1) {
+                Sauce.updateOne(
+                    {_id : sauceId},
+                    {
+                        $inc: {likes: +1},
+                        $push: {usersLiked: userId}
+                    }
+                )
+                    .then(() => response.status(201).json({message: "Aimée"}))
+                    .catch((error) => response.status(400).json({error: error}));
+            };
 
-// router.post("/:id/like", (sauceController.rateSauce));
-exports.rateSauce = (request, response, next) => {
-    // Sauce.findOne
-    // Sauce.updateOne
-    // Sauce.updateOne
-};
+            // Retrait de l'appréciation positive (like)
+            if (sauce.usersLiked.includes(userId) && like === 0) {
+                Sauce.updateOne(
+                    {_id : sauceId},
+                    {
+                        $inc: {likes: -1},
+                        $pull: {usersLiked: userId}
+                    }
+                )
+                    .then(() => response.status(201).json({message: "Appréciation positive retirée"}))
+                    .catch((error) => res.status(400).json({error: error}));
+            };
+  
+            // // Ajout d'une appréciation négative (dislike)
+            if (!sauce.usersDisliked.includes(userId) && like === -1) {
+                Sauce.updateOne(
+                    {_id : sauceId},
+                    {
+                        $inc: {dislikes: +1},
+                        $push: {usersDisliked: userId}
+                    }
+                )
+                    .then(() => response.status(201).json({message: "Pas aimée"}))
+                    .catch((error) => response.status(400).json({error: error}));
+            };
+  
+            // Retrait de l'appréciation négative (dislike)
+            if (sauce.usersDisliked.includes(userId) && like === 0) {
+                Sauce.updateOne(
+                    {_id : sauceId},
+                    {
+                        $inc: {dislikes: -1},
+                        $pull: {usersDisliked: userId}
+                    }
+                )
+                    .then(() => response.status(201).json({message: "Appréciation négative retirée"}))
+                    .catch((error) => response.status(500).json({error: error}));
+            };
+        })      
+        .catch((error) => response.status(500).json({error: error}));
+  };
+  
