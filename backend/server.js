@@ -13,7 +13,7 @@ const mongoose = require("mongoose");
 // Importation des modules de routage //
 // ********************************** //
 const sauceRoutes = require("./routes/sauces");
-const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/users");
 
 // Traitement des requêtes vers la route /image avec un dossier images statique
 const path = require("path");
