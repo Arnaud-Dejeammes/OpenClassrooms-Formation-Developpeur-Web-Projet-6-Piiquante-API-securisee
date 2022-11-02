@@ -2,16 +2,7 @@
 // Importation des modules //
 // *********************** //
 const express = require("express");
-const bcrypt = require("bcrypt");
-// const jsonwebtoken = require("jsonwebtoken");
-
-// const User = require("../model/user");
-
 const router = express.Router(); // Enregistrement des routes dans le routeur Express
-
-// const userController = require("../controllers/user")
-
-// const User = require("../models/user");
 
 const authentificationController = require("../controllers/auth");
 const userController = require("../controllers/user");
