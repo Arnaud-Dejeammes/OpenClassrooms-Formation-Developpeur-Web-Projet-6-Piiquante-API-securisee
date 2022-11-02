@@ -10,7 +10,7 @@ const router = express.Router(); // Enregistrement des routes dans le routeur Ex
 // *************************** //
 // Importation des middlewares //
 // *************************** //
-const check = require("../jsonwebtoken/check"); // Déplacer le fichier et supprimer le dossier > "../middlewares/check"
+const check = require("../middlewares/check"); // Déplacer le fichier et supprimer le dossier > "../middlewares/check"
 const multer = require("../middlewares/multer");
 
 // ******************************** //
