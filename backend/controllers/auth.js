@@ -14,10 +14,10 @@ exports.login = (request, response, next) => {
     User.findOne({
         email: request.body.email
     })        
-        // Possibilité d'interception des informations : prévoir une sécurité
+        // Possibilité d'interception des informations : prévoir une sécurité supplémentaire
         .then(user => {
             if (!user) {                
-                return response.status(401).json({  // Unauthorized
+                return response.status(401).json({
                     // Sécurité : aucune information ne doit laisser transparaître
                     // la présence ou l'absence d'un utilisateur dans la base de données
                     message: "Identifiant ou mot de passe incorrect"
@@ -27,7 +27,7 @@ exports.login = (request, response, next) => {
             bcrypt.compare(request.body.password, user.password)
                 .then(valid => {                    
                     if (!valid) {
-                        return response.status(401).json({ // Unauthorized
+                        return response.status(401).json({
                             // Sécurité : aucune information ne doit laisser transparaître
                             // la présence ou l'absence d'un utilisateur dans la base de données
                             message: "Identifiant ou mot de passe incorrect"
@@ -42,7 +42,7 @@ exports.login = (request, response, next) => {
                         )
                     })                                    
                 })               
-                .catch(error => response.status(500).json({error}));
+                .catch(error => response.status(500).json({error: error}));
         })        
-        .catch(error => response.status(500).json({error}));
+        .catch(error => response.status(500).json({error: error}));
 };
