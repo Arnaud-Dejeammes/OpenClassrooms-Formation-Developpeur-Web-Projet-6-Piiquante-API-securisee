@@ -2,15 +2,12 @@
 // Importation des modules //
 // *********************** //
 const express = require("express");
-const router = express.Router(); // Enregistrement des routes dans le routeur Express
-// let router = express.Router();
-
-// const Sauce = require("../models/sauce");
+const router = express.Router();
 
 // *************************** //
 // Importation des middlewares //
 // *************************** //
-const check = require("../middlewares/check"); // Déplacer le fichier et supprimer le dossier > "../middlewares/check"
+const check = require("../middlewares/check");
 const multer = require("../middlewares/multer");
 
 // ******************************** //
@@ -23,8 +20,6 @@ const sauceController = require("../controllers/sauce");
 // ***************************** //
 // Règle de sécurité :
 // 1. check (autorisation par token) > 2. multer
-
-// /api/sauces
 
 // ************************************************** //
 // Route pour le tableau des sauces (Array of sauces) //
