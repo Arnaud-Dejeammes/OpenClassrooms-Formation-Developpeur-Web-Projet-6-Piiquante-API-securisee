@@ -14,13 +14,9 @@ exports.login = (request, response, next) => {
     User.findOne({
         email: request.body.email
     })        
-        .then(console.table(request.body)) // Possibilité d'interception des informations
+        // Possibilité d'interception des informations : prévoir une sécurité
         .then(user => {
-            // Utilisateur inexistant            
-            if (user) {console.log("Found")} // A supprimer
-
-            if (!user) {
-                console.log("Not found"); // A supprimer
+            if (!user) {                
                 return response.status(401).json({  // Unauthorized
                     // Sécurité : aucune information ne doit laisser transparaître
                     // la présence ou l'absence d'un utilisateur dans la base de données
@@ -29,16 +25,8 @@ exports.login = (request, response, next) => {
             }
             // Comparaison entre les mots de passe de connexion et de la base de données
             bcrypt.compare(request.body.password, user.password)
-                .then(valid => {
-                    
-                    if (valid) {
-                        console.log(user.password);
-                        console.log("Ça plane pour moi !");
-                    }; // A supprimer
-                    
+                .then(valid => {                    
                     if (!valid) {
-                        {console.log("Ça va pas ça !")}; // A supprimer
-
                         return response.status(401).json({ // Unauthorized
                             // Sécurité : aucune information ne doit laisser transparaître
                             // la présence ou l'absence d'un utilisateur dans la base de données
