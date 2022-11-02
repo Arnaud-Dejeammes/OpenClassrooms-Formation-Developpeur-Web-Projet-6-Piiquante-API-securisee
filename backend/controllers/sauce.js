@@ -55,17 +55,44 @@ exports.addSauce = (request, response, next) => {
 // Modification //
 // ************ //
 // router.put("/:id", sauceController.updateSauce);
-exports.updateSauce = (request, response, next) => {
-    //  Sauce.findOne({
-    //     _id: request.params.id
-    // })
-    Sauce.findOneAndUpdate( // updateOne
-        {_id: request.params.id},
-        {...request.body})
-    .then(() => {
-        response.status(200).json({message: "Sauce modifiée"}); // 200/201: resource object (update)
-    })
-    .catch(error => response.status(500).json({error: error})); // 400
+exports.updateSauce = (request, response, next) => {    
+    // Modification avec changement d'image
+    if (request.file) {
+        Sauce.findOne( // findOneAndUpdate
+            {_id: request.params.id},
+        )
+        .then(sauce => {
+            // Suppression de l'ancienne image
+            const filename = sauce.imageUrl.split("/images/")[1];
+            fileSystem.unlink(`images/$(filename)`, () => {
+                const sauceObject = {
+                    ...JSON.parse(request.body.sauce),
+                    imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
+                }
+                // Enregistrement de la modification
+                Sauce.updateOne(
+                    {_id: request.params.id},
+                    {...sauceObject}
+                )
+                .then(() => {
+                    response.status(200).json({message: "Sauce modifiée"}); // 200/201: resource object (update)
+                })
+                .catch(error => response.status(400).json({error: error})); // 500
+            })
+        })
+        .catch(error => response.status(500).json({error: error})); // 400
+    } else { // Modification sans changement d'image
+        Sauce.findOneAndUpdate( // updateOne
+            {_id: request.params.id},
+            {
+                ...request.body,
+                // imageUrl: `${request.protocol}://${request.get("host")}/images/${request.file.filename}`
+            })
+        .then(() => {
+            response.status(200).json({message: "Sauce modifiée"}); // 200/201: resource object (update)
+        })
+        .catch(error => response.status(500).json({error: error})); // 400
+    }
 };
 
 // ***************************** //
