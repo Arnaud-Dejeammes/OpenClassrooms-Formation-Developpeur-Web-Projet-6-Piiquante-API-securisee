@@ -2,6 +2,7 @@
 // Importation des modules //
 // *********************** //
 const fileSystem = require("fs");
+const { findOneAndDelete } = require("../models/sauce");
 
 const Sauce = require("../models/sauce");
 
@@ -95,34 +96,28 @@ exports.updateSauce = (request, response, next) => {
     }
 };
 
-// ***************************** //
-// Suppression (message: String) //
-// ***************************** //
+// *********** //
+// Suppression //
+// *********** //
 // router.delete("/:id", sauceController.deleteSauce);
 exports.deleteSauce = (request, response, next) => {
-    Sauce.findOne({ // deleteOne
+    Sauce.findOne({ // findOneAndDelete
         _id: request.params.id
     })
-    .then((oneSauce) => {
-        // if (oneSauce._id != request.auth._id) { // userId
-        //     response.status(401).json({error: error})
-        // } else {
-        //     const filename = oneSauce.imageUrl.split("/images/")[1];
-        //     fileSystem.unlink(`images/$(filename)`, () => {
+        .then((sauce) => {
+            const filename = sauce.imageUrl.split("/images/")[1];
+            
+            fileSystem.unlink(`images/${filename}`, () => {
                 Sauce.deleteOne({
                     _id: request.params.id
                 })
-                .then(() => {response.status(200).json({
+                .then(() => {response.status(200).json({ // 200/202/204: no response (delete resource)
                     message: "Sauce supprimée"
                 })})
                 .catch(error => response.status(401).json({error: error}));
-            // });
-        // }
-    })
-    // .then(() => {
-    //     response.status(200).json({message: "Sauce supprimée"}); // 200/202/204: no response (delete resource)
-    // })
-    .catch(error => response.status(500).json({error: error})); // .catch((error) => {response.status(400).json({error: error});});
+            });
+        })    
+        .catch(error => response.status(500).json({error: error}));
 };
 
 // ****************************** //
