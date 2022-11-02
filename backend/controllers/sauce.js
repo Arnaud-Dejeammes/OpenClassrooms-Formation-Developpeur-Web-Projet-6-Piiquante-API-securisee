@@ -7,9 +7,9 @@ const Sauce = require("../models/sauce");
 
 // Pour des questions de sécurité, séparer le front du back : se contenter de messages.
 
-// ********************************* //
-// Tableau complet (Array of sauces) //
-// ********************************* //
+// *************** //
+// Tableau complet //
+// *************** //
 // router.get("/", sauceController.getEverySauce);
 exports.getEverySauce = (request, response, next) => {
     Sauce.find()        
@@ -17,24 +17,23 @@ exports.getEverySauce = (request, response, next) => {
         .catch(error => response.status(404).json({error: error})); // 404 : not found
 };
 
-// ********************************* //
-// Element spécifique (Single sauce) //
-// ********************************* //
+// ****************** //
+// Element spécifique //
+// ****************** //
 // router.get("/:id", (sauceController.getOneSauce));
 exports.getOneSauce = (request, response, next) => {
     Sauce.findOne({
         _id: request.params.id
-    })
-        .then(console.log(request.params))
+    })        
         .then((oneSauce) => {response.status(200).json(oneSauce)}) // 200: resource object (read)        
         .catch(error => response.status(500).json({error: error})); // 400
 };
 
-// *********************** //
-// Ajout (message: String) //
-// *********************** //
+// ***** //
+// Ajout //
+// ***** //
 // router.post("/", sauceController.addSauce);
-// !!! Avec MongoDB, le nom de la collection prend par défaut le nom du modèle au pluriel (Sauce > Sauces)
+// !!! Avec MongoDB, le nom de la collection prend par défaut le nom du modèle au pluriel (sauce > sauces)
 exports.addSauce = (request, response, next) => {    
     const sauceObject = JSON.parse(request.body.sauce); // Données de la requête envoyées par le front-end : form-data
     
@@ -52,15 +51,17 @@ exports.addSauce = (request, response, next) => {
         .catch(error => response.status(400).json({error: error})); // 400: bad request
 };
 
-// ****************************** //
-// Modification (message: String) //
-// ****************************** //
+// ************ //
+// Modification //
+// ************ //
 // router.put("/:id", sauceController.updateSauce);
 exports.updateSauce = (request, response, next) => {
-    Sauce.updateOne({ // findOneAndUpdate
-        _id: request.params.id,
-        ...request.body
-    })
+    //  Sauce.findOne({
+    //     _id: request.params.id
+    // })
+    Sauce.findOneAndUpdate( // updateOne
+        {_id: request.params.id},
+        {...request.body})
     .then(() => {
         response.status(200).json({message: "Sauce modifiée"}); // 200/201: resource object (update)
     })
