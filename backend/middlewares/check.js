@@ -23,7 +23,7 @@ module.exports = (request, response, next) => {
         } else {
             next();
         };        
-    } catch(error) {
+    } catch (error) {
         response.status(401).json({error});
     };
 };
