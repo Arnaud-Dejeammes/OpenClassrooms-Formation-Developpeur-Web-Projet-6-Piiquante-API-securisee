@@ -8,20 +8,11 @@ const mongoose = require("mongoose");
 // ************************** //
 const sauceSchema = mongoose.Schema({
     // _id généré par Mongoose, avec value et expectedType
-    // String(11) // primarykey: true; autoIncrement: true
-    
-    // Front end        
-        // newSauce.name = this.sauceForm.get('name')!.value;
-        // newSauce.manufacturer = this.sauceForm.get('manufacturer')!.value;
-        // newSauce.description = this.sauceForm.get('description')!.value;
-        // newSauce.mainPepper = this.sauceForm.get('mainPepper')!.value;
-        // newSauce.heat = this.sauceForm.get('heat')!.value;
-        // newSauce.userId = this.auth.getUserId();
+    // primarykey: true; autoIncrement: true
         
     name: {
         type: String,
-        required: true
-        // trim: true
+        required: true        
     },
     manufacturer: {
         type: String,
@@ -37,7 +28,7 @@ const sauceSchema = mongoose.Schema({
     },    
     heat: {
         type: Number,
-        // required: true
+        required: true
     },
     userId: {
         type: String,
@@ -48,22 +39,18 @@ const sauceSchema = mongoose.Schema({
         required: true
     }, 
     likes: {
-        type: Number,
-        // required: false,
+        type: Number,        
         default: 0
     },
     dislikes: {
-        type: Number,
-        // required: false,
+        type: Number,        
         default: 0
     },
     usersLiked: {
-        type: [String], // ["String <userId>"]
-        // required: false        
+        type: [String],
     },
     usersDisliked: {
-        type: [String], // ["String <userId>"]
-        // required: false
+        type: [String],
     }
 });
 
@@ -71,13 +58,3 @@ const sauceSchema = mongoose.Schema({
 // Exportation pour Express //
 // ************************ //
 module.exports = mongoose.model("Sauce", sauceSchema);
-
-// Possibilité d'appeler directement le modèle
-// module.exports = (mongoose) => {
-//     return Sauce = mongoose.define("Sauce", {
-//         userId: {
-//             type: String,
-//             required: true//             
-//         } // etc.
-//     });
-// };

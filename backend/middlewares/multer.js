@@ -14,9 +14,9 @@ const MIME_TYPES = {
     "image/webp": "webp"
 };
 
-// ****************************************************** //
+// *********************************************************************** //
 // Stockage et dénomination des images dans le système local de fichiers   //
-// ****************************************************** //
+// *********************************************************************** //
 const storage = multer.diskStorage({
     destination: (request, file, callback) => {
         callback(null, "images");
@@ -25,12 +25,6 @@ const storage = multer.diskStorage({
         const name = file.originalname.split(" ").join("_");
         const extension = MIME_TYPES[file.mimetype];
         callback(null, name + Date.now() + "." + extension);
-
-        // if (extension === "gif" || extension === "jpg" || extension === "png" || extension === "webp") {
-        //     callback(null, true);
-        // } else {
-        //     callback("Format d'image non pris en charge", false)
-        // }
     }
 });
 
